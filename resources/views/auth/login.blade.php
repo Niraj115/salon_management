@@ -1,26 +1,23 @@
-@extends('backend.layouts.app')
+@extends('frontend.layouts.app')
 
 @section('content')
 <div class="max-w-md mx-auto bg-white p-6 rounded shadow">
-    <h2 class="text-2xl mb-4">Login</h2>
+    <h2 class="text-2xl font-bold mb-4 text-center">Login</h2>
 
-    <form method="POST" action="/login">
+    <form method="POST" action="{{ route('login') }}">
         @csrf
 
-        <input type="email" name="email" placeholder="Email"
-            class="w-full mb-3 p-2 border" required>
+        <input type="email" name="email"
+               class="w-full p-2 border rounded mb-3"
+               placeholder="Email" required>
 
-        <input type="password" name="password" placeholder="Password"
-            class="w-full mb-3 p-2 border" required>
+        <input type="password" name="password"
+               class="w-full p-2 border rounded mb-3"
+               placeholder="Password" required>
 
-        <button class="w-full bg-blue-600 text-white p-2 rounded">
+        <button class="w-full bg-pink-600 text-white py-2 rounded">
             Login
         </button>
     </form>
-
-    <p class="mt-4 text-sm">
-        Don't have an account?
-        <a href="/register" class="text-blue-500">Register</a>
-    </p>
 </div>
 @endsection

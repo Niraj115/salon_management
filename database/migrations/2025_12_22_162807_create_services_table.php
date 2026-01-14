@@ -10,8 +10,10 @@ return new class extends Migration {
             $table->id();
             $table->string('name');
             $table->integer('price');
-            $table->integer('duration'); // minutes
+            $table->integer('duration'); 
             $table->text('description')->nullable();
+            $table->string('image')->nullable(); // image
+            $table->boolean('status')->default(1); // active
             $table->timestamps();
         });
     }

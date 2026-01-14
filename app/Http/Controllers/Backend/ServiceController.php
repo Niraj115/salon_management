@@ -22,12 +22,27 @@ class ServiceController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'name' => 'required',
-            'price' => 'required|numeric',
+            'name'     => 'required|string',
+            'price'    => 'required|numeric',
             'duration' => 'required|numeric',
+            'image'    => 'nullable|image|mimes:jpg,jpeg,png',
+            'status'   => 'required|boolean',
         ]);
 
-        Service::create($request->all());
+        $imagePath = null;
+
+        if ($request->hasFile('image')) {
+            $imagePath = $request->file('image')->store('services', 'public');
+        }
+
+        Service::create([
+            'name'        => $request->name,
+            'price'       => $request->price,
+            'duration'    => $request->duration,
+            'description' => $request->description,
+            'image'       => $imagePath,
+            'status'      => $request->status,
+        ]);
 
         return redirect()->route('services.index')
             ->with('success', 'Service created successfully');
@@ -41,12 +56,27 @@ class ServiceController extends Controller
     public function update(Request $request, Service $service)
     {
         $request->validate([
-            'name' => 'required',
-            'price' => 'required|numeric',
+            'name'     => 'required|string',
+            'price'    => 'required|numeric',
             'duration' => 'required|numeric',
+            'image'    => 'nullable|image|mimes:jpg,jpeg,png',
+            'status'   => 'required|boolean',
         ]);
 
-        $service->update($request->all());
+        $imagePath = $service->image;
+
+        if ($request->hasFile('image')) {
+            $imagePath = $request->file('image')->store('services', 'public');
+        }
+
+        $service->update([
+            'name'        => $request->name,
+            'price'       => $request->price,
+            'duration'    => $request->duration,
+            'description' => $request->description,
+            'image'       => $imagePath,
+            'status'      => $request->status,
+        ]);
 
         return redirect()->route('services.index')
             ->with('success', 'Service updated successfully');
@@ -55,7 +85,6 @@ class ServiceController extends Controller
     public function destroy(Service $service)
     {
         $service->delete();
-
         return back()->with('success', 'Service deleted');
     }
 }

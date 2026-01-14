@@ -9,33 +9,41 @@ use App\Models\User;
 
 class AuthController extends Controller
 {
+    /* ---------- LOGIN FORM ---------- */
     public function loginForm()
     {
         return view('auth.login');
     }
 
+    /* ---------- REGISTER FORM ---------- */
     public function registerForm()
     {
         return view('auth.register');
     }
 
+    /* ---------- REGISTER ---------- */
     public function register(Request $request)
     {
         $request->validate([
-            'name' => 'required',
+            'name' => 'required|string|max:255',
             'email' => 'required|email|unique:users',
             'password' => 'required|min:6|confirmed',
         ]);
 
-        User::create([
+        $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
         ]);
 
-        return redirect('/login')->with('success', 'Account created!');
+        // Auto login after registration 
+        Auth::login($user);
+
+        // ✅ Redirect to backend dashboard
+        return redirect()->route('dashboard');
     }
 
+    /* ---------- LOGIN ---------- */
     public function login(Request $request)
     {
         $credentials = $request->validate([
@@ -45,20 +53,24 @@ class AuthController extends Controller
 
         if (Auth::attempt($credentials)) {
             $request->session()->regenerate();
-            return redirect('/dashboard');
+
+            // Always go to backend dashboard
+            return redirect()->route('dashboard');
         }
 
         return back()->withErrors([
-            'email' => 'Invalid credentials',
+            'email' => 'Invalid email or password',
         ]);
     }
 
+    /* ---------- LOGOUT ---------- */
     public function logout(Request $request)
     {
         Auth::logout();
+
         $request->session()->invalidate();
         $request->session()->regenerateToken();
 
-        return redirect('/login');
+        return redirect()->route('login');
     }
 }

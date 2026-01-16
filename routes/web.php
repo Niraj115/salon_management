@@ -27,6 +27,9 @@ Route::post('/book', [FrontendController::class, 'storeBooking']);
 
 Route::get('/booking/{appointment}', [FrontendController::class, 'bookingView'])
     ->name('frontend.booking.view');
+Route::get('/team', [FrontendController::class, 'team'])
+    ->name('frontend.team');
+
 
 /*
 |--------------------------------------------------------------------------

@@ -20,20 +20,28 @@ class StaffController extends Controller
     }
 
     public function store(Request $request)
-    {
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'phone' => 'nullable|string|max:20',
-            'role' => 'nullable|string|max:255',
-        ]);
+{
+    $request->validate([
+        'name'  => 'required|string|max:255',
+        'phone' => 'nullable|string|max:20',
+        'experience' => 'required|integer|min:0',
+        'role'  => 'nullable|string|max:255',
+        'image' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
+    ]);
 
-        $data = $request->all();
-        $data['status'] = $request->has('status') ? 1 : 0;
+    $data = $request->only(['name', 'phone', 'role','experience',]);
+    $data['status'] = $request->has('status') ? 1 : 0;
 
-        Staff::create($data);
-
-        return redirect()->route('staff.index')->with('success', 'Staff added successfully.');
+    if ($request->hasFile('image')) {
+        $data['image'] = $request->file('image')->store('staff', 'public');
     }
+
+    Staff::create($data);
+
+    return redirect()->route('staff.index')
+        ->with('success', 'Staff added successfully.');
+}
+
 
     public function edit(Staff $staff)
     {
@@ -41,20 +49,28 @@ class StaffController extends Controller
     }
 
     public function update(Request $request, Staff $staff)
-    {
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'phone' => 'nullable|string|max:20',
-            'role' => 'nullable|string|max:255',
-        ]);
+{
+    $request->validate([
+        'name'  => 'required|string|max:255',
+        'phone' => 'nullable|string|max:20',
+        'experience' => 'required|integer|min:0',
+        'role'  => 'nullable|string|max:255',
+        'image' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
+    ]);
 
-        $data = $request->all();
-        $data['status'] = $request->has('status') ? 1 : 0;
+    $data = $request->only(['name', 'phone', 'role','experience',]);
+    $data['status'] = $request->has('status') ? 1 : 0;
 
-        $staff->update($data);
-
-        return redirect()->route('staff.index')->with('success', 'Staff updated successfully.');
+    if ($request->hasFile('image')) {
+        $data['image'] = $request->file('image')->store('staff', 'public');
     }
+
+    $staff->update($data);
+
+    return redirect()->route('staff.index')
+        ->with('success', 'Staff updated successfully.');
+}
+
 
     public function destroy(Staff $staff)
     {

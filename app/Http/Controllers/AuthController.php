@@ -9,19 +9,19 @@ use App\Models\User;
 
 class AuthController extends Controller
 {
-    /* ---------- LOGIN FORM ---------- */
+    //login form
     public function loginForm()
     {
         return view('auth.login');
     }
 
-    /* ---------- REGISTER FORM ---------- */
+    //register form
     public function registerForm()
     {
         return view('auth.register');
     }
 
-    /* ---------- REGISTER ---------- */
+    //register
     public function register(Request $request)
     {
         $request->validate([
@@ -39,11 +39,11 @@ class AuthController extends Controller
         // Auto login after registration 
         Auth::login($user);
 
-        // ✅ Redirect to backend dashboard
+        // Redirect to backend dashboard
         return redirect()->route('dashboard');
     }
 
-    /* ---------- LOGIN ---------- */
+     //login
     public function login(Request $request)
     {
         $credentials = $request->validate([
@@ -63,7 +63,7 @@ class AuthController extends Controller
         ]);
     }
 
-    /* ---------- LOGOUT ---------- */
+    //logout
     public function logout(Request $request)
     {
         Auth::logout();
@@ -71,6 +71,6 @@ class AuthController extends Controller
         $request->session()->invalidate();
         $request->session()->regenerateToken();
 
-        return redirect()->route('login');
+        return redirect()->route('home');
     }
 }

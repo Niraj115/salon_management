@@ -73,4 +73,9 @@ class FrontendController extends Controller
     {
         return view('frontend.booking-view', compact('appointment'));
     }
+    public function team()
+{
+    $staffs = Staff::where('status', 1)->get();
+    return view('frontend.team', compact('staffs'));
+}
 }

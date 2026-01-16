@@ -19,8 +19,10 @@
 
         <div class="space-x-6 font-medium">
             <a href="{{ route('home') }}" class="hover:text-pink-600">Home</a>
-            <a href="{{ route('frontend.services') }}" class="hover:text-pink-600">Services</a>
+            <a href="{{ route('frontend.services') }}" class="hover:text-pink-600"> Our Services</a>
+            <a href="{{ route('frontend.team') }}" class="hover:text-pink-600"> Our Team</a>
             <a href="{{ route('frontend.book') }}" class="hover:text-pink-600">Book</a>
+
 
             @auth
                 <a href="{{ route('dashboard') }}" class="text-blue-600 font-semibold">

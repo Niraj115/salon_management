@@ -1,57 +1,53 @@
 @extends('backend.layouts.app')
 
 @section('content')
-<div class="max-w-md mx-auto bg-white p-8 rounded-lg shadow mt-10">
+<h2 class="text-2xl font-bold mb-6">Edit Staff</h2>
 
-    <h2 class="text-2xl font-bold mb-6 text-center">Edit Staff</h2>
+<form method="POST"
+      action="{{ route('staff.update', $staff) }}"
+      enctype="multipart/form-data"
+      class="max-w-xl bg-white p-6 rounded shadow">
+    @csrf
+    @method('PUT')
 
-    @if($errors->any())
-        <div class="bg-red-100 text-red-700 p-3 rounded mb-4">
-            <ul class="list-disc list-inside">
-                @foreach($errors->all() as $error)
-                    <li>{{ $error }}</li>
-                @endforeach
-            </ul>
-        </div>
+    <label class="block mb-2 font-medium">Name</label>
+    <input type="text" name="name"
+           value="{{ $staff->name }}"
+           class="w-full mb-4 p-2 border rounded"
+           required>
+
+    <label class="block mb-2 font-medium">Role</label>
+    <input type="text" name="role"
+           value="{{ $staff->role }}"
+           class="w-full mb-4 p-2 border rounded">
+
+    <label class="block mb-2 font-medium">Experience (Years)</label>
+    <input type="number" name="experience"
+           value="{{ $staff->experience }}"
+           class="w-full mb-4 p-2 border rounded">
+
+    <label class="block mb-2 font-medium">Phone</label>
+    <input type="text" name="phone"
+           value="{{ $staff->phone }}"
+           class="w-full mb-4 p-2 border rounded">
+
+    @if($staff->image)
+        <img src="{{ asset('storage/'.$staff->image) }}"
+             class="w-20 h-20 rounded mb-3">
     @endif
 
-    <form method="POST" action="{{ route('staff.update', $staff->id) }}">
-        @csrf
-        @method('PUT')
+    <label class="block mb-2 font-medium">Change Photo</label>
+    <input type="file" name="image"
+           class="w-full mb-4 p-2 border rounded">
 
-        <div class="mb-4">
-            <label class="block mb-1 font-medium">Name <span class="text-red-500">*</span></label>
-            <input type="text" name="name" value="{{ old('name', $staff->name) }}"
-                class="w-full p-3 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500" required>
-        </div>
+    <label class="flex items-center gap-2 mb-4">
+        <input type="checkbox" name="status"
+               {{ $staff->status ? 'checked' : '' }}>
+        Active
+    </label>
 
-        <div class="mb-4">
-            <label class="block mb-1 font-medium">Phone</label>
-            <input type="text" name="phone" value="{{ old('phone', $staff->phone) }}"
-                class="w-full p-3 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
-                placeholder="e.g. 9801234567">
-        </div>
-
-        <div class="mb-4">
-            <label class="block mb-1 font-medium">Role</label>
-            <input type="text" name="role" value="{{ old('role', $staff->role) }}"
-                class="w-full p-3 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
-                placeholder="e.g. Hair Stylist">
-        </div>
-
-        <div class="mb-6">
-            <label class="inline-flex items-center">
-                <input type="checkbox" name="status" value="1" 
-                       {{ old('status', $staff->status) == 1 ? 'checked' : '' }}
-                       class="form-checkbox h-5 w-5 text-blue-600">
-                <span class="ml-2 font-medium">Active</span>
-            </label>
-        </div>
-
-        <button type="submit" 
-                class="w-full bg-blue-600 text-white p-3 rounded hover:bg-blue-700 transition font-medium">
-            Update Staff
-        </button>
-    </form>
-</div>
+    <button class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded">
+        Update Staff
+    </button>
+</form>
 @endsection

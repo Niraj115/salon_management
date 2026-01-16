@@ -1,55 +1,43 @@
 @extends('backend.layouts.app')
 
 @section('content')
-<div class="max-w-md mx-auto bg-white p-8 rounded-lg shadow mt-10">
+<h2 class="text-2xl font-bold mb-6">Add Staff</h2>
 
-    <h2 class="text-2xl font-bold mb-6 text-center">Add Staff</h2>
+<form method="POST"
+      action="{{ route('staff.store') }}"
+      enctype="multipart/form-data"
+      class="max-w-xl bg-white p-6 rounded shadow">
+    @csrf
 
-    @if($errors->any())
-        <div class="bg-red-100 text-red-700 p-3 rounded mb-4">
-            <ul class="list-disc list-inside">
-                @foreach($errors->all() as $error)
-                    <li>{{ $error }}</li>
-                @endforeach
-            </ul>
-        </div>
-    @endif
+    <label class="block mb-2 font-medium">Name</label>
+    <input type="text" name="name"
+           class="w-full mb-4 p-2 border rounded"
+           required>
 
-    <form method="POST" action="{{ route('staff.store') }}">
-        @csrf
+    <label class="block mb-2 font-medium">Role</label>
+    <input type="text" name="role"
+           placeholder="Hair Stylist / Makeup Artist"
+           class="w-full mb-4 p-2 border rounded">
 
-        <div class="mb-4">
-            <label class="block mb-1 font-medium">Name <span class="text-red-500">*</span></label>
-            <input type="text" name="name" value="{{ old('name') }}"
-                class="w-full p-3 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500" required>
-        </div>
+    <label class="block mb-2 font-medium">Experience (Years)</label>
+    <input type="number" name="experience"
+           class="w-full mb-4 p-2 border rounded">
 
-        <div class="mb-4">
-            <label class="block mb-1 font-medium">Phone</label>
-            <input type="text" name="phone" value="{{ old('phone') }}"
-                class="w-full p-3 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
-                placeholder="e.g. 9801234567">
-        </div>
+    <label class="block mb-2 font-medium">Phone</label>
+    <input type="text" name="phone"
+           class="w-full mb-4 p-2 border rounded">
 
-        <div class="mb-4">
-            <label class="block mb-1 font-medium">Role</label>
-            <input type="text" name="role" value="{{ old('role') }}"
-                class="w-full p-3 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
-                placeholder="e.g. Hair Stylist">
-        </div>
+    <label class="block mb-2 font-medium">Photo</label>
+    <input type="file" name="image"
+           class="w-full mb-4 p-2 border rounded">
 
-        <div class="mb-6">
-            <label class="inline-flex items-center">
-                <input type="checkbox" name="status" value="1" checked
-                    class="form-checkbox h-5 w-5 text-blue-600">
-                <span class="ml-2 font-medium">Active</span>
-            </label>
-        </div>
+    <label class="flex items-center gap-2 mb-4">
+        <input type="checkbox" name="status" checked>
+        Active
+    </label>
 
-        <button type="submit" 
-                class="w-full bg-blue-600 text-white p-3 rounded hover:bg-blue-700 transition font-medium">
-            Add Staff
-        </button>
-    </form>
-</div>
+    <button class="bg-pink-600 hover:bg-pink-700 text-white px-4 py-2 rounded">
+        Save Staff
+    </button>
+</form>
 @endsection

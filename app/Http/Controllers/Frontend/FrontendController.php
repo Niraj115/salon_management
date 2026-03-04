@@ -13,9 +13,16 @@ class FrontendController extends Controller
 {
     // Home page
     public function home()
-    {
-        return view('frontend.home');
-    }
+{
+    $services = Service::where('status', 1)->latest()->take(3)->get();
+    $staffs   = Staff::where('status', 1)->take(3)->get();
+
+    return view('frontend.home', compact('services', 'staffs'));
+}
+public function about()
+{
+    return view('frontend.about');
+}
 
     // Services page
     public function services()

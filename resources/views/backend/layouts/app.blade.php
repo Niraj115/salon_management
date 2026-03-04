@@ -8,21 +8,18 @@
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
 
-    <!-- Page-specific styles -->
     @yield('styles')
 </head>
 <body class="bg-gray-100">
 
-    <!-- Navbar -->
+<!-- Navbar -->
 <nav class="bg-gray-800 text-white p-4">
     <div class="container mx-auto flex justify-between items-center">
 
-        <!-- Logo -->
         <a href="{{ route('dashboard') }}" class="font-bold text-lg">
             COZZY SALON
         </a>
 
-        <!-- Navigation Links -->
         <div class="flex space-x-3 items-center">
 
             <a href="{{ route('dashboard') }}"
@@ -68,14 +65,16 @@
     </div>
 </nav>
 
+<!-- Page Content -->
+<div class="container mx-auto mt-6">
+    @yield('content')
+</div>
 
-    <!-- Page Content -->
-    <div class="container mx-auto mt-6">
-        @yield('content')
-    </div>
+<!-- Chart.js CDN (ADD HERE) -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-    <!-- Page-specific scripts -->
-    @yield('scripts')
+<!-- Page-specific scripts -->
+@yield('scripts')
 
 </body>
 </html>

@@ -16,6 +16,8 @@ use App\Http\Controllers\Backend\ReportController;
 |--------------------------------------------------------------------------
 */
 Route::get('/', [FrontendController::class, 'home'])->name('home');
+Route::get('/about', [FrontendController::class, 'about'])
+    ->name('frontend.about');
 
 Route::get('/services', [FrontendController::class, 'services'])
     ->name('frontend.services');

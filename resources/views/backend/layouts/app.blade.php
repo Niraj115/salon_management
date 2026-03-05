@@ -45,7 +45,23 @@
             <a href="{{ route('appointments.index') }}"
                class="px-3 py-2 rounded {{ request()->is('appointments*') ? 'bg-gray-700' : 'hover:text-gray-300' }}">
                 Appointments
-            </a>
+            <a href="{{ route('contacts.index') }}"
+   class="relative px-3 py-2 rounded hover:text-gray-300">
+
+    Inbox
+
+    @php
+        $unreadCount = \App\Models\Contact::where('is_read', false)->count();
+    @endphp
+
+    @if($unreadCount > 0)
+        <span class="absolute -top-1 -right-2 
+                     bg-red-500 text-white text-xs 
+                     px-2 py-0.5 rounded-full">
+            {{ $unreadCount }}
+        </span>
+    @endif
+</a>
 
             <a href="{{ route('reports.index') }}"
                class="px-3 py-2 rounded {{ request()->routeIs('reports.index') ? 'bg-gray-700' : 'hover:text-gray-300' }}">

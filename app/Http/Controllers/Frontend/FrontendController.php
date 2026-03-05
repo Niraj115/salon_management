@@ -13,76 +13,80 @@ class FrontendController extends Controller
 {
     // Home page
     public function home()
-{
-    $services = Service::where('status', 1)->latest()->take(3)->get();
-    $staffs   = Staff::where('status', 1)->take(3)->get();
+    {
+        $services = Service::where('status', 1)->latest()->take(3)->get();
+        $staffs   = Staff::where('status', 1)->take(3)->get();
 
-    return view('frontend.home', compact('services', 'staffs'));
-}
-public function about()
-{
-    return view('frontend.about');
-}
+        return view('frontend.home', compact('services', 'staffs'));
+    }
+
+    // About page
+    public function about()
+    {
+        return view('frontend.about');
+    }
 
     // Services page
     public function services()
-{
-    $services = Service::where('status', 1)->latest()->get();
-    return view('frontend.services', compact('services'));
-}
+    {
+        $services = Service::where('status', 1)->latest()->get();
+        return view('frontend.services', compact('services'));
+    }
+
+    // Team page
+    public function team()
+    {
+        $staffs = Staff::where('status', 1)->get();
+        return view('frontend.team', compact('staffs'));
+    }
 
     // Booking form page
     public function book()
     {
         return view('frontend.book', [
-            'services' => Service::all(),
+            'services' => Service::where('status', 1)->get(),
             'staffs'   => Staff::where('status', 1)->get(),
         ]);
     }
 
-    // Store booking
+    // Store the booking
     public function storeBooking(Request $request)
     {
         $request->validate([
-            'name' => 'required|string|max:255',
-            'phone' => 'required|string|max:20',
-            'service_id' => 'required|exists:services,id',
-            'staff_id' => 'required|exists:staff,id',
+            'name'             => 'required|string|max:255',
+            'phone'            => 'required|string|max:20',
+            'service_id'       => 'required|exists:services,id',
+            'staff_id'         => 'required|exists:staff,id',
             'appointment_date' => 'required|date',
             'appointment_time' => 'required',
         ]);
 
-        // Create or get customer
+        // Create or get existing customer
         $customer = Customer::firstOrCreate(
             ['phone' => $request->phone],
-            ['name' => $request->name]
+            ['name'  => $request->name]
         );
 
         // Create appointment
         $appointment = Appointment::create([
-            'customer_id' => $customer->id,
-            'service_id' => $request->service_id,
-            'staff_id' => $request->staff_id,
+            'customer_id'      => $customer->id,
+            'service_id'       => $request->service_id,
+            'staff_id'         => $request->staff_id,
             'appointment_date' => $request->appointment_date,
             'appointment_time' => $request->appointment_time,
-            'status' => 'pending',
+            'status'           => 'pending',
         ]);
 
-        // Redirect to view page
-        return redirect()->route(
-            'frontend.booking.view',
-            $appointment->id
-        );
+        // Redirect to confirmation page
+        return redirect()->route('frontend.booking.view', $appointment->id);
     }
 
-    // Booking confirmation page
+    // Show confirmation page
     public function bookingView(Appointment $appointment)
     {
-        return view('frontend.booking-view', compact('appointment'));
+        // Load related models
+        $appointment->load(['customer','service','staff']);
+
+        return view('frontend.confirmation', compact('appointment'));
     }
-    public function team()
-{
-    $staffs = Staff::where('status', 1)->get();
-    return view('frontend.team', compact('staffs'));
-}
 }

@@ -40,8 +40,8 @@
                 Book
             </a>
             <a href="{{ route('contact.create') }}"
-               class="{{ request()->routeIs('contact.create') ? 'text-pink-400 font-bold' : 'text-gray-200 hover:text-pink-300 transition' }}">
-                Contact
+               class="{{ request()->routeIs('contact.create') ? 'text-pink-400 font-bold' : 'text-white-200 hover:text-pink-300 transition' }}">
+                Contact Us
             </a>
 
             @auth
@@ -55,11 +55,11 @@
                 </form>
             @else
                 <a href="{{ route('login') }}"
-                   class="{{ request()->routeIs('login') ? 'text-pink-400 font-bold' : 'text-pink-400 hover:text-pink-300 transition' }}">
+                   class="{{ request()->routeIs('login') ? 'text-pink-400 font-bold' : 'text-white-400 hover:text-pink-300 transition' }}">
                     Login
                 </a>
                 <a href="{{ route('register') }}"
-                   class="{{ request()->routeIs('register') ? 'text-pink-400 font-bold' : 'text-pink-400 hover:text-pink-300 transition' }}">
+                   class="{{ request()->routeIs('register') ? 'text-pink-400 font-bold' : 'text-white-400 hover:text-pink-300 transition' }}">
                     Register
                 </a>
             @endauth
